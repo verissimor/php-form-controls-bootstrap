@@ -46,4 +46,4 @@ $my_anchor->set('href', 'http://www.google.com.br')
         ->set('target', '_blank')
         ->set('text', 'Google.com')
         ->classAdd('link10')
-        ->output();
+        ->output(true);

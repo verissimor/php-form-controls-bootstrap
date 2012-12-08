@@ -128,9 +128,11 @@ class pfcb_html_element {
         return $this;
     }
 
-    /* build */
-
-    function build() {
+    /**
+     * Return the html rendered element
+     * @return string
+     */
+    function output($echo = false) {
         //start
         $build = '<' . $this->type;
 
@@ -160,14 +162,13 @@ class pfcb_html_element {
             $build.= ' />';
         }
 
-        //return it
-        return $build;
-    }
-
-    /* spit it out */
-
-    function output() {
-        echo $this->build();
+        //Return
+        if ($echo) {
+            echo $build;
+            return $this;
+        } else {
+            return $build;
+        }
     }
 
 }
