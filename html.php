@@ -2,81 +2,165 @@
 
 /* http://davidwalsh.name/create-html-elements-php-htmlelement-class */
 
-class html_element {
+class pfcb_html_element {
     /* vars */
 
     var $type;
-    var $attributes;
+    private $attributes;
+    private $classes = array();
     var $self_closers;
 
-    /* constructor */
-
-    function html_element($type, $self_closers = array('input', 'img', 'hr', 'br', 'meta', 'link')) {
+    /**
+     * Construct new object html element
+     * <p>new pfcb_html_element("a")</p>
+     * @param string $type Type of element e.g input, a, br, link, meta, p, ul
+     * @param string $self_closers Tags that are automatically closed
+     */
+    function __construct($type, $self_closers = array('input', 'img', 'hr', 'br', 'meta', 'link')) {
         $this->type = strtolower($type);
         $this->self_closers = $self_closers;
+
+        return $this;
     }
 
-    /* get */
-
+    /**
+     * Return the value of attribute 
+     * <p>$html->get('href'); <br />//out: http://www.google.com</p>
+     * @param string $attribute The attribute to return
+     * @return string
+     */
     function get($attribute) {
-        return $this->attributes[$attribute];
+        if (isset($this->attributes[$attribute]))
+            return $this->attributes[$attribute];
+        else
+            return "";
     }
 
-    /* set -- array or key,value */
-
+    /**
+     * Set a parameter. You can use:
+     * <p>$my_anchor->set('href','http://www.google.com.br');</p>
+     * Or:
+     * <p>$my_anchor->set(array('href' => 'http://www.google.com.br', 'class' => 'current');</p>
+     * @param type $attribute
+     * @param type $value
+     */
     function set($attribute, $value = '') {
         if (!is_array($attribute)) {
+            if ($attribute == 'class')
+                die("To manipulate class use classAdd, classRemove");
+
             $this->attributes[$attribute] = $value;
         } else {
-            $this->attributes = array_merge($this->attributes, $attribute);
+            foreach ($attribute as $key => $value) {
+                $this->set($key, $value);
+            }
         }
+
+        return $this;
     }
 
-    /* remove an attribute */
-
-    function remove($att) {
-        if (isset($this->attributes[$att])) {
-            unset($this->attributes[$att]);
+    /**
+     * Remove attribute
+     * @param string $att
+     */
+    function remove($attribute) {
+        if (isset($this->attributes[$attribute])) {
+            unset($this->attributes[$attribute]);
         }
+
+        return $this;
     }
 
-    /* clear */
-
-    function clear() {
+    /**
+     * Clear all attributes
+     */
+    function clearAllAttributes() {
         $this->attributes = array();
+
+        return $this;
     }
 
-    /* inject */
-
-    function inject($object) {
-        if (@get_class($object) == __class__) {
-            $this->attributes['text'].= $object->build();
+    /**
+     * Add a class to Css Class element attribute
+     * @param string $className Name of CssClass
+     */
+    function classAdd($className) {
+        if (strpos($className, ' ') !== false) {
+            $classes = explode(' ', $className);
+            foreach ($classes as $className) {
+                $this->classAdd($className);
+            }
         }
+
+        if (!empty($className) && !in_array($className, $this->classes)) {
+            $this->classes[] = $className;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a class
+     * @param string $className Name of CssClass
+     */
+    function classRemove($className) {
+        if (($key = array_search($className, $this->classes)) !== false) {
+            unset($this->classes[$key]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Inject a object pfcb_html_element into current pfcb_html_element.
+     * <p>$my_anchor->inject($img_html_element);</p> 
+     * @param type $object
+     */
+    function inject($pfcb_html_element_object) {
+        if (@get_class($pfcb_html_element_object) == __class__) {
+            if (isset($this->attributes['text'])) {
+                $this->attributes['text'].= $pfcb_html_element_object->build();
+            } else {
+                $this->attributes['text'] = $pfcb_html_element_object->build();
+            }
+        }
+
+        return $this;
     }
 
     /* build */
 
     function build() {
-//start
+        //start
         $build = '<' . $this->type;
 
-//add attributes
+        //add attributes
         if (count($this->attributes)) {
             foreach ($this->attributes as $key => $value) {
-                if ($key != 'text') {
+                if ($key != 'text' && $key != 'checked' && $key != 'selected' && $key != 'disabled') {
                     $build.= ' ' . $key . '="' . $value . '"';
+                } elseif ($key == 'checked' || $key == 'selected' || $key == 'disabled') {
+                    $build .= ' ' . $key;
                 }
             }
         }
 
-//closing
+        //classes
+        if (isset($this->classes) && is_array($this->classes)) {
+            $build .= ' class="' . join(" ", $this->classes) . '"';
+        }
+
+        //closing
         if (!in_array($this->type, $this->self_closers)) {
-            $build.= '>' . $this->attributes['text'] . '</' . $this->type . '>';
+            if (isset($this->attributes['text']))
+                $build.= '>' . $this->attributes['text'] . '</' . $this->type . '>';
+            else
+                $build.= '></' . $this->type . '>';
         } else {
             $build.= ' />';
         }
 
-//return it
+        //return it
         return $build;
     }
 
