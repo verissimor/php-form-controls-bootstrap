@@ -139,9 +139,9 @@ class pfcb_html_element {
         //add attributes
         if (count($this->attributes)) {
             foreach ($this->attributes as $key => $value) {
-                if ($key != 'text' && $key != 'checked' && $key != 'selected' && $key != 'disabled') {
+                if ($key != 'text' && $key != 'checked' && $key != 'selected' && $key != 'disabled' && $key != 'readonly') {
                     $build.= ' ' . $key . '="' . $value . '"';
-                } elseif ($key == 'checked' || $key == 'selected' || $key == 'disabled') {
+                } elseif ($key == 'checked' || $key == 'selected' || $key == 'disabled' || $key == 'readonly') {
                     $build .= ' ' . $key;
                 }
             }
