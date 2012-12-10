@@ -116,13 +116,11 @@ class pfcb_html_element {
      * <p>$my_anchor->inject($img_html_element);</p> 
      * @param type $object
      */
-    function inject($pfcb_html_element_object) {
-        if (@get_class($pfcb_html_element_object) == __class__) {
-            if (isset($this->attributes['text'])) {
-                $this->attributes['text'].= $pfcb_html_element_object->build();
-            } else {
-                $this->attributes['text'] = $pfcb_html_element_object->build();
-            }
+    function inject($html) {
+        if (isset($this->attributes['text'])) {
+            $this->attributes['text'].= $html;
+        } else {
+            $this->attributes['text'] = $html;
         }
 
         return $this;
@@ -169,6 +167,10 @@ class pfcb_html_element {
         } else {
             return $build;
         }
+    }
+
+    public function __toString() {
+        return $this->output();
     }
 
 }

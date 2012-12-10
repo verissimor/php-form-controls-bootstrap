@@ -67,7 +67,7 @@ require_once 'php-form-controls-bootstrap.php'; /*
     <body>
         <h1>Hello, world!</h1>
 
-        <form id="cadastro">
+        <form id="cadastro" method="post">
             <fieldset>
                 <?php
                 $control = new pfcb_control_input_text("naonao", "");
@@ -77,6 +77,10 @@ require_once 'php-form-controls-bootstrap.php'; /*
                 <input type="submit" value="Enviar" />
             </fieldset>
         </form>
+
+        <?php
+        echo $control->getValue();
+        ?>
 
     </body>
 </html>

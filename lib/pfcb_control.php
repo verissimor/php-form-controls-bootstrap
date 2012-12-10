@@ -30,7 +30,7 @@ abstract class pfcb_control {
         $this->setup();
     }
 
-    protected function getValue() {
+    public function getValue() {
         if (pfcb::isPostBack() && isset($_POST[$this->name])) {
             return $_POST[$this->name];
         } else {
