@@ -1,5 +1,5 @@
 <?php
-require_once 'phpform.php'; 
+require_once 'phpform.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,21 +47,21 @@ require_once 'phpform.php';
         <form id="cadastro" method="get" class="form-horizontal">
             <fieldset>
                 <?php
-                $cnome = new phpform_control_input_text("nome", "", "required");
+                $cnome = new phpform_control_input_text("nome", "", phpform::valRequired());
                 $cnome->setMethod("get");
                 $cnome->setLabel("Nome");
 
-                $cmail = new phpform_control_input_text("mail", "", "required email");
-                $cmail->Append('</div>')
+                $cmail = phpform_control_input_email::newControl("mail", "", phpform::valEmailRequired())
+                        ->Append('</div>')
                         ->setLabel("Email")
                         ->Prepend('<div class="input-prepend"><span class="add-on">@</span>')
                         ->setMethod("get");
 
-                $csenha = new phpform_control_input_text("senha", "", "");
+                $csenha = new phpform_control_input_text("senha", "");
                 $csenha->setMethod("get");
                 $csenha->setLabel("Senha");
 
-                $cfone = phpform_control_input_text::newControl("telefone", "", "fone");
+                $cfone = phpform_control_input_text::newControl("telefone", "");
                 $cfone->setMethod("get");
                 $cfone->setLabel("Fone");
 

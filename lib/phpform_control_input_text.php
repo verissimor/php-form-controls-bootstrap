@@ -46,8 +46,8 @@ class phpform_control_input_text extends phpform_control {
         return $this->divControl_group->output();
     }
 
-    public function __construct($name, $value = "", $validator = "") {
-        parent::__construct($name, $value, $validator);
+    public function __construct($name, $value = "", $pfcbValidator = "") {
+        parent::__construct($name, $value, $pfcbValidator);
 
 
         $this->label = new phpform_html_element("label");

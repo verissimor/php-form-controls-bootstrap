@@ -9,5 +9,17 @@ class phpform {
 
         return false;
     }
-    
+
+    public static function valRequired() {
+        return "required";
+    }
+
+    public static function valEmail() {
+        return "email";
+    }
+
+    public static function valEmailRequired() {
+        return "required email";
+    }
+
 }
