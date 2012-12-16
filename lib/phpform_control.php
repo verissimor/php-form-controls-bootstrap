@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @property pfcb_html_element $control
+ * @property phpform_html_element $control
  */
-class pfcb_control {
+abstract class phpform_control {
 
     private $value;
     private $name;
@@ -15,23 +15,16 @@ class pfcb_control {
     protected $control;
     public $validator;
 
-    protected function getType() {
-        return "pfcb_control";
-    }
+    abstract protected function getType();
 
-    protected function setup() {
-        return false;
-    }
+    abstract protected function setup();
 
-    public static function newControl($name, $value = "", $pfcbValidator = "") {
-        $control = new pfcb_control($name, $value, $pfcbValidator);
-        return $control;
-    }
+    abstract public function newControl($name, $value = "", $pfcbValidator = "");
 
     function __construct($name, $value = "", $pfcbValidator = "") {
         $this->name = $name;
 
-        $control = new pfcb_html_element($this->getType());
+        $control = new phpform_html_element($this->getType());
         $control->set("name", $name);
         $control->set("id", $name);
         $this->control = $control;
@@ -43,7 +36,7 @@ class pfcb_control {
     }
 
     public function getValue() {
-        if ($this->method == "post" && pfcb::isPostBack() && isset($_POST[$this->name])) {
+        if ($this->method == "post" && phpform::isPostBack() && isset($_POST[$this->name])) {
             return $_POST[$this->name];
         }
 

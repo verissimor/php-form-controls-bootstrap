@@ -1,6 +1,6 @@
 <?php
 
-class pfcb {
+class phpform {
 
     public static function isPostBack() {
         if (isset($_POST) && count($_POST) > 0) {

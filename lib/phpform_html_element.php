@@ -2,7 +2,7 @@
 
 /* http://davidwalsh.name/create-html-elements-php-htmlelement-class */
 
-class pfcb_html_element {
+class phpform_html_element {
     /* vars */
 
     var $type;
